@@ -1,9 +1,9 @@
 def Agente_JuanDaniel_Alejandro(board, player):
-  return "GANE"
+  return [0,0]
 
 
 def initBoard():
-  return [(0 for x in range(10)) for y in range (10)]
+  return list([[0 for x in range(10)] for y in range (10)])
 
 def printBoard(board):
   for y in board:
@@ -16,8 +16,10 @@ def main():
   red = 1
   blue = 2
   while(True):
-    Agente_JuanDaniel_Alejandro(board, 1)
-    Agente_JuanDaniel_Alejandro(board, 2)
+    move = Agente_JuanDaniel_Alejandro(board, 1)
+    board[move[0]][move[1]] = 1
+    move = Agente_JuanDaniel_Alejandro(board, 2)
+    board[move[0]][move[1]] = 2
     printBoard(board)
     break
 
