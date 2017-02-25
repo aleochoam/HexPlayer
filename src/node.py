@@ -1,5 +1,10 @@
 class Node(object):
   """Clase nodo n-ario"""
-  def __init__(self, data):
-    self.data = data
-    childs = None
+  utility = 0
+  succesors = []
+
+  def __init__(self, utility):
+    self.utility = utility
+
+  def addSuccesor(self, succesor):
+    self.succesors.append(succesor)

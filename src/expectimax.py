@@ -1,7 +1,7 @@
 # Cambiar por funcion de evaluación
 
 def value(state):
-  if state.succesors == 0:
+  if len(state.succesors) == 0:
     return state.utility
 
   if state.isMax:
