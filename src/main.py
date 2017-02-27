@@ -1,15 +1,15 @@
+from node import Node
+from expectimax import *
+from ai import *
+
 def Agente_JuanDaniel_Alejandro(board, player):
-  return "GANE"
+  root = Node(None, board)
+  expandNode(root, player)
+  return root
 
+def initBoard(numCols, numRows):
+  return [[0 for x in range(numCols)] for y in range (numRows)]
 
-def initBoard():
-  return [(0 for x in range(10)) for y in range (10)]
-
-def printBoard(board):
-  for y in board:
-    for x in y:
-      print(x, end=" ")
-    print(" ")
 
 def main():
   board = initBoard()
@@ -21,7 +21,19 @@ def main():
     printBoard(board)
     break
 
+def exampleAI():
+  board = initBoard(11,11)
+  root = Node(None, board)
+  expandNode(root, 1)
+  root.printNode()
+  root.getChild(10).printNode()
 
+def exampleTree():
+  root = Node(None, "Raiz")
+  Node.addSuccesor(root, "Hijo 1")
+  root.print()
+  root.getChild(0).print()
 
 if __name__ == '__main__':
-  main()
+  # exampleTree()
+  exampleAI()

@@ -1,23 +1,28 @@
+from random import randint
 # Cambiar por funcion de evaluación
 
-def value(state):
-  if len(state.succesors) == 0:
-    return state.utility
+def value(node):
+  if len(node.succesors) == 0:
+    return getUtility(node)
 
-  if state.isMax:
-    return maxValue(state)
+  if node.isMax:
+    return maxValue(node)
   else:
-    return expValue(state)
+    return expValue(node)
 
-def maxValue(state):
+def maxValue(node):
   value = -inf
-  for child in state.succesors:
+  for child in node.succesors:
     value = max(v, value(child))
   return value
 
-def expValue(state):
+def expValue(node):
   value = 0
-  for child in state.succesors:
-    p = 1/len(state.succesors)
+  for child in node.succesors:
+    p = 1/len(node.succesors)
     value = value + p*value(child)
   return values
+
+def getUtility(node):
+  # Hacer algo magico
+  return randint(1,100)
