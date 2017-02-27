@@ -16,8 +16,10 @@ def main():
   red = 1
   blue = 2
   while(True):
-    Agente_JuanDaniel_Alejandro(board, 1)
-    Agente_JuanDaniel_Alejandro(board, 2)
+    move = Agente_JuanDaniel_Alejandro(board, 1)
+    board[move[0]][move[1]] = 1
+    move = Agente_JuanDaniel_Alejandro(board, 2)
+    board[move[0]][move[1]] = 2
     printBoard(board)
     break
 
