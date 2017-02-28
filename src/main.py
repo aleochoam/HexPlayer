@@ -25,17 +25,13 @@ def main():
 
 def exampleAI():
   board = initBoard(11,11)
+  board[0][4] = 1
+  board[2][5] = 1
   root = Node(None, board)
   expandNode(root, 1)
-  root.printNode()
-  root.getChild(10).printNode()
-
-def exampleTree():
-  root = Node(None, "Raiz")
-  Node.addSuccesor(root, "Hijo 1")
-  root.print()
-  root.getChild(0).print()
+  # root.printNode()
+  # root.getChild(10).printNode()
+  print(hasVirtualConnection(root.getChild(1), 1))
 
 if __name__ == '__main__':
-  # exampleTree()
   exampleAI()
