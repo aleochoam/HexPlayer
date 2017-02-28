@@ -1,15 +1,25 @@
-from copy import deepcopy
+import numpy as np
+
+"""
+Modulo de inteligencia artificial, evaluacion de estados y expansion de nodos
+"""
+
+"""Asigna los hijos con todos los posibles estados a un nodo dado"""
+def Agente_JuanDaniel_Alejandro(board, player):
+  root = Node(None, board)
+  expandNode(root, player)
+  return root
 
 def expandNode(node, player):
   state = node.state
   for col in range(0, len(state)):
     for row in range(0, len(state[col])):
       if state[col][row] == 0:
-        child = deepcopy(state) #Se podrá cambiar por algo más eficiente?
+        child = np.copy(state) #Se podrá cambiar por algo más eficiente?
         child[col][row] = player
         node.addSuccesor(child)
 
-
+"""Evalua si dado un estado, hay una conexion virtual"""
 def hasVirtualConnection(node, player):
   board = node.state
   size = len(board)
