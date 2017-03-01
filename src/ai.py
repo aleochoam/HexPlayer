@@ -1,15 +1,16 @@
 import numpy as np
+from changeNode import ChangeNode
 
 """
 Modulo de inteligencia artificial, evaluacion de estados y expansion de nodos
 """
-
-"""Asigna los hijos con todos los posibles estados a un nodo dado"""
+"""FUNCION PRINCIPAL"""
 def Agente_JuanDaniel_Alejandro(board, player):
   root = Node(None, board)
   expandNode(root, player)
   return root
 
+"""Asigna los hijos con todos los posibles estados a un nodo dado"""
 def expandNode(node, player):
   state = node.state
   for col in range(0, len(state)):
@@ -19,16 +20,17 @@ def expandNode(node, player):
         child[col][row] = player
         node.addSuccesor(child)
 
+
 def expandChangeNode(node, player):
   state = node.state
   root = _getRoot(node)
-  moves = getPosibleMoves(node.state, node.changset, player)
+  moves = getPosibleMoves(root.state, node.changset, player)
   node.addSuccesor(None, node.changset.extend(moves))
 
 def _getRoot(node):
   root = node
-  while root is not None:
-    root = node.parent
+  while root.parent is not None:
+    root = root.parent
   return root
 
 def getPosibleMoves(state, moves, player):
@@ -53,9 +55,13 @@ def hasVirtualConnection(node, player):
       for x in range(size):
         if y < size-2 and 1 < x < size-2:
           if board[y][x] == player:
-            if ((board[y+1][x+1] == player and board[y+1][x] == 0 and board[y][x+1] == 0) or
-                (board[y+2][x-1] == player and board[y+1][x-1] == 0 and board[y+1][x] == 0) or
-                (board[y+1][x-2] == player and board[y][x-1] == 0 and board[y+1][x+1] == 0)):
+            if ((board[y+1][x+1] == player and board[y+1][x] == 0 and \
+                  board[y][x+1] == 0) or
+                (board[y+2][x-1] == player and board[y+1][x-1] == 0 and \
+                  board[y+1][x] == 0) or
+                (board[y+1][x-2] == player and board[y][x-1] == 0 and \
+                  board[y+1][x+1] == 0)):
+
               return True
 
 
@@ -64,8 +70,11 @@ def hasVirtualConnection(node, player):
       for x in range(size):
         if x < size-2:
           if board[y][x] == player:
-            if ((board[y+1][x+1] == player and board[y][x+1] == 0 and board[y+1][x] == 0) or
-                (board[y-1][x+2] == player and board[y][x+1] == 0 and board[y+1][x+1] == 0) or
-                (board[y-2][x+1] == player and board[y+1][x] == 0 and board[y][x+1] == 0)):
+            if ((board[y+1][x+1] == player and board[y][x+1] == 0 and \
+                  board[y+1][x] == 0) or
+                (board[y-1][x+2] == player and board[y][x+1] == 0 and \
+                  board[y+1][x+1] == 0) or
+                (board[y-2][x+1] == player and board[y+1][x] == 0 and \
+                  board[y][x+1] == 0)):
                return True
   return False
