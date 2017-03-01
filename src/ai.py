@@ -19,6 +19,30 @@ def expandNode(node, player):
         child[col][row] = player
         node.addSuccesor(child)
 
+def expandChangeNode(node, player):
+  state = node.state
+  root = _getRoot(node)
+  moves = getPosibleMoves(node.state, node.changset, player)
+  node.addSuccesor(None, node.changset.extend(moves))
+
+def _getRoot(node):
+  root = node
+  while root is not None:
+    root = node.parent
+  return root
+
+def getPosibleMoves(state, moves, player):
+  for move in moves:
+    state[move[0]][move[1]] = player
+
+  newMoves = []
+  for col in range(len(state)):
+    for row in range(len(state)):
+      if state[col][row] == 0:
+        newMoves.append((player, [col,row]))
+  return newMoves
+
+
 """Evalua si dado un estado, hay una conexion virtual"""
 def hasVirtualConnection(node, player):
   board = node.state
@@ -29,9 +53,9 @@ def hasVirtualConnection(node, player):
       for x in range(size):
         if y < size-2 and 1 < x < size-2:
           if board[y][x] == player:
-            if (board[y+1][x-1] == player or
-                board[y+2][x+1] == player or
-                board[y+1][x+2] == player):
+            if ((board[y+1][x+1] == player and board[y+1][x] == 0 and board[y][x+1] == 0) or
+                (board[y+2][x-1] == player and board[y+1][x-1] == 0 and board[y+1][x] == 0) or
+                (board[y+1][x-2] == player and board[y][x-1] == 0 and board[y+1][x+1] == 0)):
               return True
 
 
@@ -40,8 +64,8 @@ def hasVirtualConnection(node, player):
       for x in range(size):
         if x < size-2:
           if board[y][x] == player:
-            if (board[y-1][x+1] == player or
-                board[y+1][x+2] == player or
-                board[y+2][x+1] == player):
+            if ((board[y+1][x+1] == player and board[y][x+1] == 0 and board[y+1][x] == 0) or
+                (board[y-1][x+2] == player and board[y][x+1] == 0 and board[y+1][x+1] == 0) or
+                (board[y-2][x+1] == player and board[y+1][x] == 0 and board[y][x+1] == 0)):
                return True
   return False
