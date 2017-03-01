@@ -1,0 +1,3 @@
+- Jugar solamente en unra region y que vaya creciendo mediante avance el juego
+- Si la nueva jugada se junta con otra posicion mia
+- encontrar el n maximo que me permita 

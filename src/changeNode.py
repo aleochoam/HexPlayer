@@ -1,3 +1,4 @@
+import numpy as np
 class ChangeNode(object):
   """docstring for ChangeNode"""
   def __init__(self, parent, state, changeset):
@@ -7,11 +8,13 @@ class ChangeNode(object):
     self.changeset = changeset
 
   def addSuccesor(self, state, changeset):
+    # print(changeset)
     node = ChangeNode(self, state, changeset)
     self.succesors.append(node)
 
   def printNode(self):
-    print(self.state)
+    print("Estado: " + str(self.state))
+    print("ChangeSet: " + str(self.changeset))
 
   def getParent(self):
     return self.parent

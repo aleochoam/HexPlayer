@@ -24,8 +24,10 @@ def expandNode(node, player):
 def expandChangeNode(node, player):
   state = node.state
   root = _getRoot(node)
-  moves = getPosibleMoves(root.state, node.changset, player)
-  node.addSuccesor(None, node.changset.extend(moves))
+  moves = getPosibleMoves(root.state, node.changeset, player)
+  for newMove in moves:
+    newChangeset = node.changeset + [newMove]
+    node.addSuccesor(None, newChangeset)
 
 def _getRoot(node):
   root = node
@@ -34,13 +36,14 @@ def _getRoot(node):
   return root
 
 def getPosibleMoves(state, moves, player):
+  newBoard = np.copy(state)
   for move in moves:
-    state[move[0]][move[1]] = player
+    newBoard[move[1][0]][move[1][1]] = move[0]
 
   newMoves = []
   for col in range(len(state)):
     for row in range(len(state)):
-      if state[col][row] == 0:
+      if newBoard[col][row] == 0:
         newMoves.append((player, [col,row]))
   return newMoves
 

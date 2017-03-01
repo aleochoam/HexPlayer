@@ -28,7 +28,6 @@ def checkWinner(board):
 
   return False
 
-
 def checkLine(board, player, i, j):
   if player == ONE:
     if i >= len(board)-1:
@@ -72,9 +71,14 @@ def main():
 
 def exampleAI():
   board = initBoard(11,11)
-  root = Node(None, board)
+  root = ChangeNode(None, board, [])
+  expandChangeNode(root, ONE)
+  for child in root.succesors:
+    expandChangeNode(child, TWO)
+    for nieto in child.succesors:
+      expandChangeNode(nieto, ONE)
 
-  print(board)
+  root.succesors[3].succesors[10].succesors[3].printNode()
   checkWinner(board)
   # print(hasVirtualConnection(root, TWO))
 
