@@ -6,6 +6,7 @@ class ChangeNode(object):
     self.parent = parent
     self.state = state
     self.changeset = changeset
+    self.value = 0
 
   def addSuccesor(self, state, changeset):
     # print(changeset)
@@ -22,6 +23,9 @@ class ChangeNode(object):
   def getChild(self, index):
     if self._isIndexValid(index):
       return self.succesors[index]
+
+  def getSuccesors(self):
+    return self.succesors
 
   def _isIndexValid(self, index):
     if 0 <= index < len(self.succesors):

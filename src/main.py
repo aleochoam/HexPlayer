@@ -11,6 +11,15 @@ TWO = 2
 def initBoard(numCols, numRows):
   return np.array([[0 for x in range(numCols)] for y in range (numRows)])
 
+def makeMove(board):
+  player = int(input("Ingrese jugador: "))
+  y = int(input("Ingrese y: "))
+  x = int(input("Ingrese x: "))
+  move = [player, [y,x]]
+
+  board[y][x] = player
+  return move
+
 def checkWinner(board):
   # player TWO
   for x in range(len(board[0])):
@@ -82,6 +91,12 @@ def exampleAI():
   checkWinner(board)
   # print(hasVirtualConnection(root, TWO))
 
+def exampleGame():
+  board = initBoard(11,11)
+  while not checkWinner(board):
+    print(board)
+    move = makeMove(board)
+    print("Conexiones realizadas: " + str(countNewConnections(board, move)))
 
 if __name__ == '__main__':
-  exampleAI()
+  exampleGame()

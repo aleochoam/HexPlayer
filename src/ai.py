@@ -1,26 +1,36 @@
 import numpy as np
 from changeNode import ChangeNode
-
+from expectimax import value
 """
 Modulo de inteligencia artificial, evaluacion de estados y expansion de nodos
 """
+
 """FUNCION PRINCIPAL"""
 def Agente_JuanDaniel_Alejandro(board, player):
+  adversary = 0
+  if player == 1:
+    adversary == 2
+  else:
+    adversary == 1
+
   root = Node(None, board)
   expandNode(root, player)
-  return root
+  for child in root.getSuccesors():
+    expandNode(root, adversary)
+    for grandChildren in child.getSuccesors():
+      expandNode(grandChildren, player)
+
+  bestNode = None
+  for child in root.getSuccesors():
+    nodeValue = value(child)
+    child.value = nodeValue
+
+    if bestNode.value < nodeValue:
+      bestNode = child
+
+  return bestNode.changeset[1]
 
 """Asigna los hijos con todos los posibles estados a un nodo dado"""
-def expandNode(node, player):
-  state = node.state
-  for col in range(0, len(state)):
-    for row in range(0, len(state[col])):
-      if state[col][row] == 0:
-        child = np.copy(state) #Se podrá cambiar por algo más eficiente?
-        child[col][row] = player
-        node.addSuccesor(child)
-
-
 def expandChangeNode(node, player):
   state = node.state
   root = _getRoot(node)
@@ -35,6 +45,7 @@ def _getRoot(node):
     root = root.parent
   return root
 
+# move[numeroJugador][y,x]
 def getPosibleMoves(state, moves, player):
   newBoard = np.copy(state)
   for move in moves:
@@ -81,3 +92,30 @@ def hasVirtualConnection(node, player):
                   board[y][x+1] == 0)):
                return True
   return False
+
+def countNewConnections(board, move):
+  count = 0
+  y = move[1][0]
+  x = move[1][1]
+  player = move[0]
+  size = len(board)
+
+  if y > 0 and board[y-1][x] == player:
+    count += 1
+
+  if y < size-1 and board[y+1][x] == player:
+    count += 1
+
+  if x > 0 and board[y][x-1] == player:
+    count += 1
+
+  if x < size-1 and board[y][x+1] == player:
+    count += 1
+
+  if x < size-1 and y > 0 and board[y-1][x+1] == player:
+    count += 1
+
+  if x > 0 and y < size-1 and board[y+1][x-1] == player:
+    count += 1
+
+  return count

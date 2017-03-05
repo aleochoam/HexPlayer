@@ -12,15 +12,24 @@ def value(node):
 
 def maxValue(node):
   value = -inf
-  for child in node.succesors:
-    value = max(v, value(child))
+
+  if len(node.getSuccesors()) == 0:
+    value = getUtility(node)
+  else:
+    for child in node.succesors:
+      value = max(v, value(child))
   return value
 
 def expValue(node):
   value = 0
-  for child in node.succesors:
-    p = 1/len(node.succesors)
-    value = value + p*value(child)
+
+  if len(node.getSuccesors()) == 0:
+    value = getUtility(node)
+
+  else:
+    for child in node.succesors:
+      p = 1/len(node.succesors)
+      value = value + p*value(child)
   return values
 
 def getUtility(node):
