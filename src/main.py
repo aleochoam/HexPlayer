@@ -1,7 +1,7 @@
 import time
 import numpy as np
 
-from node import Node
+from changeNode import ChangeNode
 from expectimax import *
 from ai import *
 
@@ -9,7 +9,7 @@ ONE = 1
 TWO = 2
 
 def initBoard(numCols, numRows):
-  return np.array([[0 for x in range(numCols)] for y in range (numRows)])
+  return [[0 for x in range(numCols)] for y in range (numRows)]
 
 def makeMove(board):
   player = int(input("Ingrese jugador: "))
@@ -98,5 +98,15 @@ def exampleGame():
     move = makeMove(board)
     print("Conexiones realizadas: " + str(countNewConnections(board, move)))
 
+def intento():
+  board = np.array(initBoard(11,11))
+  for i in range(len(board)):
+    board[i][i] = 1
+  print(board)
+  miniBoard = playOnSubMatch(board, 3, 1)
+  print(miniBoard)
+
 if __name__ == '__main__':
-  exampleGame()
+  # exampleGame()
+  intento()
+  # exampleAI()

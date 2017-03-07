@@ -1,2 +1,1 @@
-- Jugar solamente en unra region y que vaya creciendo mediante avance el juego
 - encontrar el n maximo que me permita

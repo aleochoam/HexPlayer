@@ -4,7 +4,7 @@ class ChangeNode(object):
   def __init__(self, parent, state, changeset):
     self.succesors = []
     self.parent = parent
-    self.state = state
+    self.state = np.array(state)
     self.changeset = changeset
     self.value = 0
 

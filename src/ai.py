@@ -1,11 +1,12 @@
 import numpy as np
 from changeNode import ChangeNode
 from expectimax import value
+
 """
 Modulo de inteligencia artificial, evaluacion de estados y expansion de nodos
 """
 
-"""FUNCION PRINCIPAL"""
+"""FUNCION PRINCIPAL, dado un tablero y un jugador, retorna la mejor jugada"""
 def Agente_JuanDaniel_Alejandro(board, player):
   adversary = 0
   if player == 1:
@@ -30,6 +31,50 @@ def Agente_JuanDaniel_Alejandro(board, player):
 
   return bestNode.changeset[1]
 
+"""Agente que juega por reflejo"""
+def reflexAgent(board, player):
+  # moves = countMoves(board)
+  if player == 1:
+    if board[3][4] == 0:
+      return (3,4)
+    elif board[5][3] == 0:
+      return (5,3)
+    elif board[6][4] == 0:
+      return (6,4)
+    elif  board[7][5] == 0:
+      return (7,5)
+  else:
+    if board[4][3] == 0:
+      return (4,3)
+    elif board[3][5] == 0:
+      return (3,5)
+    elif board[4][6] == 0:
+      return (4,6)
+    elif  board[5][7] == 0:
+      return (5,7)
+
+"""Cuenta cuantas jugadas se han hecho en un tablero"""
+def countMoves(board):
+  count = 0
+  for y in len(board):
+    for x in len(board):
+      if board[y][x] == 1 or board[y][x] == 2:
+        count += 1
+
+  return count
+
+"""Retorna un subtablero de un tablero dada un jugador y un tamaño"""
+def playOnSubMatch(board, size, player):
+  center = int(len(board)/2)
+  if player == 1:
+    newBoard = []
+    board = board.tolist()
+    for row in board:
+      newBoard.append(row[center-size:center+size])
+    return np.array(newBoard)
+  else:
+    return board[center-size:center+size]
+
 """Asigna los hijos con todos los posibles estados a un nodo dado"""
 def expandChangeNode(node, player):
   state = node.state
@@ -39,6 +84,7 @@ def expandChangeNode(node, player):
     newChangeset = node.changeset + [newMove]
     node.addSuccesor(None, newChangeset)
 
+"""retorna la raiz de un arbol"""
 def _getRoot(node):
   root = node
   while root.parent is not None:
@@ -46,6 +92,7 @@ def _getRoot(node):
   return root
 
 # move[numeroJugador][y,x]
+"""Retorna una lista de posibles jugadas que se pueden hacer dado un estado"""
 def getPosibleMoves(state, moves, player):
   newBoard = np.copy(state)
   for move in moves:
@@ -93,6 +140,7 @@ def hasVirtualConnection(node, player):
                return True
   return False
 
+"""Retorna el numero de conexiones que se hacen con una jugada"""
 def countNewConnections(board, move):
   count = 0
   y = move[1][0]
