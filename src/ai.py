@@ -15,6 +15,11 @@ def Agente_JuanDaniel_Alejandro(board, player):
   else:
     adversary == 1
 
+  # Se juega por reflejo
+  reflejo = reflexAgent(board, player)
+  if reflejo is not None:
+    return reflejo
+
   root = ChangeNode(None, board, [], isMax=True)
   expandChangeNode(root, player)
   for child in root.getSuccesors():
@@ -41,22 +46,22 @@ def reflexAgent(board, player):
   # moves = countMoves(board)
   if player == 1:
     if board[3][4] == 0:
-      return (3,4)
+      return [3,4]
     elif board[5][3] == 0:
-      return (5,3)
+      return [5,3]
     elif board[6][4] == 0:
-      return (6,4)
+      return [6,4]
     elif  board[7][5] == 0:
-      return (7,5)
+      return [7,5]
   else:
     if board[4][3] == 0:
-      return (4,3)
+      return [4,3]
     elif board[3][5] == 0:
-      return (3,5)
+      return [3,5]
     elif board[4][6] == 0:
-      return (4,6)
+      return [4,6]
     elif  board[5][7] == 0:
-      return (5,7)
+      return [5,7]
 
 """Cuenta cuantas jugadas se han hecho en un tablero"""
 def countMoves(board):

@@ -69,23 +69,13 @@ def checkLine(board, player, i, j):
     return False
 
 def main():
-  board = initBoard()
+  board = initBoard(11,11)
   while(not checkWinner(board)):
     move = Agente_JuanDaniel_Alejandro(board, 1)
     board[move[0]][move[1]] = 1
     move = Agente_JuanDaniel_Alejandro(board, 2)
     board[move[0]][move[1]] = 2
-    printBoard(board)
-    break
-
-def intento():
-  board = initBoard(11,11)
-  root = ChangeNode(None, board, [])
-  expandChangeNode(root, ONE)
-  for child in root.getSuccesors():
-    expandChangeNode(child, TWO)
-
-  print()
+    print(np.array(board))
 
 def main2():
   board = initBoard(11,11)
@@ -93,5 +83,4 @@ def main2():
   print("El mayor es: " + str(move))
 
 if __name__ == '__main__':
-  # intento()
-  main2()
+  main()
