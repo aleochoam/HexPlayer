@@ -1,5 +1,5 @@
 from random import randint
-# Cambiar por funcion de evaluación
+import math
 
 def value(node):
   if len(node.succesors) == 0:
@@ -8,30 +8,29 @@ def value(node):
   if node.isMax:
     return maxValue(node)
   else:
-    return expValue(node)
+    return minValue(node)
 
 def maxValue(node):
-  value = -inf
+  v = -math.inf
 
   if len(node.getSuccesors()) == 0:
-    value = getUtility(node)
+    v = getUtility(node)
   else:
     for child in node.succesors:
-      value = max(v, value(child))
-  return value
+      v = max(v, value(child))
+  return v
 
-def expValue(node):
-  value = 0
+def minValue(node):
+  v = +math.inf
 
   if len(node.getSuccesors()) == 0:
-    value = getUtility(node)
+    v = getUtility(node)
 
   else:
     for child in node.succesors:
-      p = 1/len(node.succesors)
-      value = value + p*value(child)
-  return values
+      v = min(v, value(child))
+  return v
 
 def getUtility(node):
   # Hacer algo magico
-  return randint(1,100)
+  return randint(1,100000)

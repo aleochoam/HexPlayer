@@ -2,8 +2,7 @@ import time
 import numpy as np
 
 from changeNode import ChangeNode
-from expectimax import *
-from ai import *
+from ai import Agente_JuanDaniel_Alejandro
 
 ONE = 1
 TWO = 2
@@ -78,33 +77,11 @@ def main():
     printBoard(board)
     break
 
-def exampleAI():
-  board = initBoard(11,11)
-  root = ChangeNode(None, board, [])
-  expandChangeNode(root, ONE)
-  for child in root.succesors:
-    expandChangeNode(child, TWO)
-    for nieto in child.succesors:
-      expandChangeNode(nieto, ONE)
-
-  root.succesors[3].succesors[10].succesors[3].printNode()
-  checkWinner(board)
-  # print(hasVirtualConnection(root, TWO))
-
-def exampleGame():
-  board = initBoard(11,11)
-  while not checkWinner(board):
-    print(board)
-    move = makeMove(board)
-    print("Conexiones realizadas: " + str(countNewConnections(board, move)))
-
 def intento():
-  board = np.array(initBoard(11,11))
-  for i in range(len(board)):
-    board[i][i] = 1
-  print(board)
-  miniBoard = playOnSubMatch(board, 3, 1)
-  print(miniBoard)
+  board = initBoard(11,11)
+  move = Agente_JuanDaniel_Alejandro(board, 1)
+  print(move)
+
 
 if __name__ == '__main__':
   # exampleGame()
