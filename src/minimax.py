@@ -1,4 +1,4 @@
-from random import randint
+from random import random
 import math
 
 def value(node):
@@ -33,4 +33,4 @@ def minValue(node):
 
 def getUtility(node):
   # Hacer algo magico
-  return randint(1,100000)
+  return int(random()*1000)

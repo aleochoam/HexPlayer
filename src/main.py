@@ -1,5 +1,6 @@
 import time
 import numpy as np
+from random import randint, random
 
 from changeNode import ChangeNode
 from ai import *
@@ -81,14 +82,15 @@ def intento():
   board = initBoard(11,11)
   root = ChangeNode(None, board, [])
   expandChangeNode(root, ONE)
-
+  for child in root.getSuccesors():
+    expandChangeNode(child, TWO)
 
   print()
 
 def main2():
   board = initBoard(11,11)
   move = Agente_JuanDaniel_Alejandro(board, 1)
-  print(move)
+  print("El mayor es: " + str(move))
 
 if __name__ == '__main__':
   # intento()

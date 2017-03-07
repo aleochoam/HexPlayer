@@ -15,23 +15,26 @@ def Agente_JuanDaniel_Alejandro(board, player):
   else:
     adversary == 1
 
-  root = ChangeNode(None, board, [])
+  root = ChangeNode(None, board, [], isMax=True)
   expandChangeNode(root, player)
   for child in root.getSuccesors():
-    expandChangeNode(root, adversary)
-    # for grandChildren in child.getSuccesors():
-    #   expandChangeNode(grandChildren, player)
+    expandChangeNode(child, adversary, isMax=True)
+    for grandChildren in child.getSuccesors():
+      expandChangeNode(grandChildren, player)
 
-  # bestNode = None
-  # for child in root.getSuccesors():
-  #   nodeValue = minimax.value(child)
-  #   child.value = nodeValue
+  bestValue = 0
+  bestNode = None
+  for child in root.getSuccesors():
+    nodeValue = minimax.value(child)
+    child.value = nodeValue
 
-  #   if bestNode.value < nodeValue:
-  #     bestNode = child
+    if bestValue < nodeValue:
+      bestValue = nodeValue
+      bestNode = child
 
-  # return bestNode.changeset[1]
-  return minimax.value(root)
+  print("EL mejor es:" + str(bestValue))
+  return bestNode.changeset[0][1]
+  # return minimax.value(root)
 
 """Agente que juega por reflejo"""
 def reflexAgent(board, player):
@@ -78,13 +81,13 @@ def playOnSubMatch(board, size, player):
     return board[center-size:center+size]
 
 """Asigna los hijos con todos los posibles estados a un nodo dado"""
-def expandChangeNode(node, player):
+def expandChangeNode(node, player, isMax=False):
   state = node.state
   root = _getRoot(node)
   moves = getPosibleMoves(root.state, node.changeset, player)
   for newMove in moves:
     newChangeset = node.changeset + [newMove]
-    node.addSuccesor(None, newChangeset)
+    node.addSuccesor(None, newChangeset, isMax)
 
 """retorna la raiz de un arbol"""
 def _getRoot(node):
