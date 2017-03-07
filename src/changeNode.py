@@ -1,17 +1,17 @@
 import numpy as np
 class ChangeNode(object):
   """docstring for ChangeNode"""
-  def __init__(self, parent, state, changeset, isMax=True):
+  def __init__(self, parent, state, changeset):
     self.succesors = []
     self.parent = parent
     self.state = np.array(state)
     self.changeset = changeset
     self.value = 0
-    self.isMax = isMax
+    # self.isMax = isMax
 
-  def addSuccesor(self, state, changeset, isMax):
+  def addSuccesor(self, state, changeset):
     # print(changeset)
-    node = ChangeNode(self, state, changeset, isMax)
+    node = ChangeNode(self, state, changeset)
     self.succesors.append(node)
 
   def printNode(self):

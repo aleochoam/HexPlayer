@@ -2,7 +2,7 @@ import time
 import numpy as np
 
 from changeNode import ChangeNode
-from ai import Agente_JuanDaniel_Alejandro
+from ai import *
 
 ONE = 1
 TWO = 2
@@ -79,11 +79,17 @@ def main():
 
 def intento():
   board = initBoard(11,11)
+  root = ChangeNode(None, board, [])
+  expandChangeNode(root, ONE)
+
+
+  print()
+
+def main2():
+  board = initBoard(11,11)
   move = Agente_JuanDaniel_Alejandro(board, 1)
   print(move)
 
-
 if __name__ == '__main__':
-  # exampleGame()
-  intento()
-  # exampleAI()
+  # intento()
+  main2()
