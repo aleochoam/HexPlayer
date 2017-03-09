@@ -11,14 +11,14 @@ Modulo de inteligencia artificial, evaluacion de estados y expansion de nodos
 def Agente_JuanDaniel_Alejandro(board, player):
   adversary = 0
   if player == 1:
-    adversary == 2
+    adversary = 2
   else:
-    adversary == 1
+    adversary = 1
 
   # Se juega por reflejo
-  reflejo = reflexAgent(board, player)
-  if reflejo is not None:
-    return reflejo
+  # reflejo = reflexAgent(board, player)
+  # if reflejo is not None:
+  #   return reflejo
 
   root = ChangeNode(None, board, [], isMax=True)
   expandChangeNode(root, player)
@@ -88,18 +88,13 @@ def playOnSubMatch(board, size, player):
 """Asigna los hijos con todos los posibles estados a un nodo dado"""
 def expandChangeNode(node, player, isMax=False):
   state = node.state
-  root = _getRoot(node)
+  root = node.getRoot()
   moves = getPosibleMoves(root.state, node.changeset, player)
   for newMove in moves:
     newChangeset = node.changeset + [newMove]
     node.addSuccesor(None, newChangeset, isMax)
 
-"""retorna la raiz de un arbol"""
-def _getRoot(node):
-  root = node
-  while root.parent is not None:
-    root = root.parent
-  return root
+
 
 # move[numeroJugador][y,x]
 """Retorna una lista de posibles jugadas que se pueden hacer dado un estado"""
@@ -177,3 +172,34 @@ def countNewConnections(board, move):
     count += 1
 
   return count
+
+def isNotBlocked(board, move):
+  size = len(board)
+  y = move[1][0]
+  x = move[1][1]
+  player = move[0]
+  adversary = 0
+  if player == 1:
+    adversary = 2
+  else:
+    adversary = 1
+
+  if player == 1:
+    if y < size-1 and x > 0 and board[y+1][x] == adversary and \
+      board[y+1][x-1] == adversary:
+
+      return True
+
+  if player == 2:
+    if x < size-1 and y > 0 and board[y][x+1] == adversary and \
+      board[y+1][x+1] == adversary:
+
+      return True
+
+  return False
+
+# con una jugada, que tan larga genero una linea
+# Que tan cerca quedo de los bordes ((11-dIzq)/11)*((11-dDer)/11)
+
+def countLenLine(node, move):
+  pass

@@ -32,5 +32,4 @@ def minValue(node):
   return v
 
 def getUtility(node):
-  # Hacer algo magico
-  return int(random()*1000)
+  return node.getValue()

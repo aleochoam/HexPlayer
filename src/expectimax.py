@@ -33,5 +33,4 @@ def expValue(node):
   return values
 
 def getUtility(node):
-  # Hacer algo magico
-  return int(random()*1000)
+  return node.getValue()

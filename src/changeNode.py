@@ -1,4 +1,6 @@
 import numpy as np
+from ai import *
+
 class ChangeNode(object):
   """docstring for ChangeNode"""
   def __init__(self, parent, state, changeset, isMax=True):
@@ -33,3 +35,29 @@ class ChangeNode(object):
       return True
     else:
       return False
+
+  """retorna la raiz de un arbol"""
+  def getRoot(self):
+    root = self
+    while root.parent is not None:
+      root = root.parent
+    return root
+
+  def getState(self):
+    board = np.copy(self.getRoot().state)
+    for move in self.changeset:
+      board[move[1][0]][move[1][1]] = move[0]
+    return board
+
+  def getValue(self):
+    pesoCV = 2
+    pesoNConexiones = 1
+    pesoNoBloqueado = 2
+
+    lastMove = self.changeset[-1][0]
+    board = self.getState()
+    value = pesoCV*ai.hasVirtualConnection(board, lastMove) \
+            + pesoNConexiones * ai.countNewConnections(board, lastMove)
+            + pesoNoBloqueado * ai.isNotBlocked(board, lastMove)
+
+    return value
