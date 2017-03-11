@@ -2,7 +2,6 @@ import time
 import numpy as np
 from random import randint, random
 
-from changeNode import ChangeNode
 from ai import *
 
 ONE = 1
@@ -70,12 +69,13 @@ def checkLine(board, player, i, j):
 
 def main():
   board = initBoard(11,11)
-  move = Agente_JuanDaniel_Alejandro(board, 1)
   while(not checkWinner(board)):
+    move = Agente_JuanDaniel_Alejandro(board, 1)
     board[move[0]][move[1]] = 1
+    print(np.array(board))
     move = Agente_JuanDaniel_Alejandro(board, 2)
-  board[move[0]][move[1]] = 1
-  print(np.array(board))
+    board[move[0]][move[1]] = 2
+    print(np.array(board))
 
 def main2():
   board = initBoard(11,11)

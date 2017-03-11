@@ -16,28 +16,35 @@ def Agente_JuanDaniel_Alejandro(board, player):
     adversary = 1
 
   # Se juega por reflejo
-  # reflejo = reflexAgent(board, player)
-  # if reflejo is not None:
-  #   return reflejo
+  reflejo = reflexAgent(board, player)
+  if reflejo is not None:
+    return reflejo
 
-  root = ChangeNode(None, board, [], isMax=True)
-  expandChangeNode(root, player)
+  numMoves = countMoves(board)
+  # if numMoves <= 5:
+  #   board = playOnSubMatch(board, numMoves+1, player)
+
+  #   print(board)
+
+  root = ChangeNode(None, board, [], True)
+  expandChangeNode(root, player, False)
   for child in root.getSuccesors():
     expandChangeNode(child, adversary, isMax=True)
-    for grandChildren in child.getSuccesors():
-      expandChangeNode(grandChildren, player)
+    # if numMoves > 15:
+    #   for grandChildren in child.getSuccesors():
+    #     expandChangeNode(grandChildren, player, False)
 
-  bestValue = 0
+  bestValue = -1
   bestNode = None
   for child in root.getSuccesors():
-    nodeValue = minimax.value(child)
+    nodeValue = expectimax.value(child)
     child.value = nodeValue
 
     if bestValue < nodeValue:
       bestValue = nodeValue
       bestNode = child
 
-  print("EL mejor es:" + str(bestValue))
+  print(bestNode.changeset[0][1], bestValue)
   return bestNode.changeset[0][1]
   # return minimax.value(root)
 
@@ -66,8 +73,8 @@ def reflexAgent(board, player):
 """Cuenta cuantas jugadas se han hecho en un tablero"""
 def countMoves(board):
   count = 0
-  for y in len(board):
-    for x in len(board):
+  for y in range(len(board)):
+    for x in range(len(board)):
       if board[y][x] == 1 or board[y][x] == 2:
         count += 1
 
@@ -78,23 +85,22 @@ def playOnSubMatch(board, size, player):
   center = int(len(board)/2)
   if player == 1:
     newBoard = []
-    board = board.tolist()
+    # board = board.tolist()
     for row in board:
       newBoard.append(row[center-size:center+size])
-    return np.array(newBoard)
+    # return np.array(newBoard)
+    return newBoard
   else:
     return board[center-size:center+size]
 
 """Asigna los hijos con todos los posibles estados a un nodo dado"""
-def expandChangeNode(node, player, isMax=False):
+def expandChangeNode(node, player, isMax):
   state = node.state
   root = node.getRoot()
   moves = getPosibleMoves(root.state, node.changeset, player)
   for newMove in moves:
     newChangeset = node.changeset + [newMove]
     node.addSuccesor(None, newChangeset, isMax)
-
-
 
 # move[numeroJugador][y,x]
 """Retorna una lista de posibles jugadas que se pueden hacer dado un estado"""
@@ -112,8 +118,8 @@ def getPosibleMoves(state, moves, player):
 
 
 """Evalua si dado un estado, hay una conexion virtual"""
-def hasVirtualConnection(node, player):
-  board = node.state
+def hasVirtualConnection(board, player):
+  # board = node.state
   size = len(board)
 
   if player == 1:
@@ -191,7 +197,7 @@ def isNotBlocked(board, move):
       return True
 
   if player == 2:
-    if x < size-1 and y > 0 and board[y][x+1] == adversary and \
+    if x < size-1 and y < size-1 and board[y][x+1] == adversary and \
       board[y+1][x+1] == adversary:
 
       return True
@@ -201,5 +207,43 @@ def isNotBlocked(board, move):
 # con una jugada, que tan larga genero una linea
 # Que tan cerca quedo de los bordes ((11-dIzq)/11)*((11-dDer)/11)
 
-def countLenLine(node, move):
-  pass
+def countLenLine(board, move):
+  size = len(board)
+  y = move[1][0]
+  x = move[1][1]
+  player = move[0]
+
+  if 0 < x < size-1 and 0 < y < size-1:
+    return countLenLineAux(board, player, y, x, 0)
+
+  return 1
+
+
+def countLenLineAux(board, player, i, j, count):
+  try:
+    if player == 1:
+
+      if board[i-1][j] == 1:
+        return countLenLineAux(board, player, i-1, j, count + 1)
+      if board[i-1][j-1] == 1:
+        return countLenLineAux(board, player, i-1, j-1, count + 1)
+      # if board[i-1][j] == 1:
+      #   return countLenLineAux(board, player, i-1, j)
+      # if board[i][j+1] == 1:
+      #   return countLenLineAux(board, player, i, j+1)
+      return count
+
+    if player == 2:
+
+      if board[i][j-1] == 2:
+        return countLenLineAux(board, player, i, j+1, count+1)
+      if board[i-1][j-1] == 2:
+        return countLenLineAux(board, player, i-1, j+1, count+1)
+      # if board[i+1][j] == 2:
+      #   return countLenLineAux(board, player, i+1, j)
+      # if board[i-1][j] == 2:
+      #   return countLenLineAux(board, player, i-1, j)
+      return count
+  except IndexError:
+    return count
+

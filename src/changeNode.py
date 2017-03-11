@@ -1,9 +1,9 @@
 import numpy as np
-from ai import *
+import ai
 
 class ChangeNode(object):
   """docstring for ChangeNode"""
-  def __init__(self, parent, state, changeset, isMax=True):
+  def __init__(self, parent, state, changeset, isMax):
     self.succesors = []
     self.parent = parent
     self.state = np.array(state)
@@ -54,10 +54,12 @@ class ChangeNode(object):
     pesoNConexiones = 1
     pesoNoBloqueado = 2
 
-    lastMove = self.changeset[-1][0]
+    player = self.changeset[-1][0]
+    lastMove = self.changeset[-1]
     board = self.getState()
-    value = pesoCV*ai.hasVirtualConnection(board, lastMove) \
-            + pesoNConexiones * ai.countNewConnections(board, lastMove)
-            + pesoNoBloqueado * ai.isNotBlocked(board, lastMove)
+    value = pesoCV * ai.hasVirtualConnection(board, lastMove) \
+            + pesoNConexiones * ai.countNewConnections(board, lastMove) \
+            + pesoNoBloqueado * ai.isNotBlocked(board, lastMove) \
+            + ai.countLenLine(board, lastMove)
 
     return value

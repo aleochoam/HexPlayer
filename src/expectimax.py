@@ -11,26 +11,26 @@ def value(node):
     return expValue(node)
 
 def maxValue(node):
-  value = -inf
+  v = -inf
 
   if len(node.getSuccesors()) == 0:
-    value = getUtility(node)
+    v = getUtility(node)
   else:
     for child in node.succesors:
-      value = max(v, value(child))
-  return value
+      v = max(v, value(child))
+  return v
 
 def expValue(node):
-  value = 0
+  v = 0
 
   if len(node.getSuccesors()) == 0:
-    value = getUtility(node)
+    v = getUtility(node)
 
   else:
     for child in node.succesors:
       p = 1/len(node.succesors)
-      value = value + p*value(child)
-  return values
+      v = v + p*value(child)
+  return v
 
 def getUtility(node):
   return node.getValue()
