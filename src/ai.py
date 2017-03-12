@@ -51,6 +51,10 @@ def Agente_JuanDaniel_Alejandro(board, player):
 """Agente que juega por reflejo"""
 def reflexAgent(board, player):
   # moves = countMoves(board)
+  mid = int(len(board)/2)
+  if board[mid][mid] == 0:
+    return [mid, mid]
+    
   if player == 1:
     if board[3][4] == 0:
       return [3,4]
