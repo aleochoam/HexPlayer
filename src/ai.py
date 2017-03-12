@@ -16,28 +16,28 @@ def Agente_JuanDaniel_Alejandro(board, player):
     adversary = 1
 
   # Se juega por reflejo
-  reflejo = reflexAgent(board, player)
-  if reflejo is not None:
-    return reflejo
+  # reflejo = reflexAgent(board, player)
+  # if reflejo is not None:
+  #   return reflejo
 
-  numMoves = countMoves(board)
   # if numMoves <= 5:
   #   board = playOnSubMatch(board, numMoves+1, player)
 
   #   print(board)
+  numMoves = countMoves(board)
 
-  root = ChangeNode(None, board, [], True)
-  expandChangeNode(root, player, False)
+  root = ChangeNode(None, board, [], None)
+  expandChangeNode(root, player, True)
   for child in root.getSuccesors():
-    expandChangeNode(child, adversary, isMax=True)
-    # if numMoves > 15:
-    #   for grandChildren in child.getSuccesors():
-    #     expandChangeNode(grandChildren, player, False)
+    expandChangeNode(child, adversary, False)
+    if numMoves < 20:
+      for grandChildren in child.getSuccesors():
+        expandChangeNode(grandChildren, player, True)
 
   bestValue = -1
   bestNode = None
   for child in root.getSuccesors():
-    nodeValue = expectimax.value(child)
+    nodeValue = minimax.value(child)
     child.value = nodeValue
 
     if bestValue < nodeValue:
@@ -100,7 +100,7 @@ def expandChangeNode(node, player, isMax):
   moves = getPosibleMoves(root.state, node.changeset, player)
   for newMove in moves:
     newChangeset = node.changeset + [newMove]
-    node.addSuccesor(None, newChangeset, isMax)
+    node.addSuccesor(None, newChangeset, not isMax)
 
 # move[numeroJugador][y,x]
 """Retorna una lista de posibles jugadas que se pueden hacer dado un estado"""
@@ -197,8 +197,8 @@ def isNotBlocked(board, move):
       return True
 
   if player == 2:
-    if x < size-1 and y < size-1 and board[y][x+1] == adversary and \
-      board[y+1][x+1] == adversary:
+    if x < size-1 and y > 0 and board[y][x+1] == adversary and \
+      board[y-1][x+1] == adversary:
 
       return True
 
@@ -216,7 +216,7 @@ def countLenLine(board, move):
   if 0 < x < size-1 and 0 < y < size-1:
     return countLenLineAux(board, player, y, x, 0)
 
-  return 1
+  return (1,0)
 
 
 def countLenLineAux(board, player, i, j, count):
@@ -231,19 +231,19 @@ def countLenLineAux(board, player, i, j, count):
       #   return countLenLineAux(board, player, i-1, j)
       # if board[i][j+1] == 1:
       #   return countLenLineAux(board, player, i, j+1)
-      return count
+      return (count, i)
 
     if player == 2:
 
       if board[i][j-1] == 2:
-        return countLenLineAux(board, player, i, j+1, count+1)
+        return countLenLineAux(board, player, i, j-1, count+1)
       if board[i-1][j-1] == 2:
-        return countLenLineAux(board, player, i-1, j+1, count+1)
+        return countLenLineAux(board, player, i-1, j-1, count+1)
       # if board[i+1][j] == 2:
       #   return countLenLineAux(board, player, i+1, j)
       # if board[i-1][j] == 2:
       #   return countLenLineAux(board, player, i-1, j)
-      return count
+      return (count, i)
   except IndexError:
-    return count
+    return (count, i)
 

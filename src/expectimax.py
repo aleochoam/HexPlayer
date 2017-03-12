@@ -1,4 +1,5 @@
 from random import randint
+import math
 # Cambiar por funcion de evaluación
 
 def value(node):
@@ -11,7 +12,7 @@ def value(node):
     return expValue(node)
 
 def maxValue(node):
-  v = -inf
+  v = -math.inf
 
   if len(node.getSuccesors()) == 0:
     v = getUtility(node)
