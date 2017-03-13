@@ -38,7 +38,7 @@ def Agente_JuanDaniel_Alejandro(board, player):
 #  print(root.state)
   root.state = board
 #  print(root.state)
-  if numMoves < 50:
+  if numMoves < 100:
     res = expectimax.value(root)
   else:
     res = minimax.value(root)
@@ -54,9 +54,9 @@ def Agente_JuanDaniel_Alejandro(board, player):
 #  print(move)
   if(onSub):
     if(player == 1):
-      return (move[0], move[1]+(delta-1))
+      return [move[0], move[1]+(5-delta)]
     else:
-      return (move[0]+(delta-1),move[1])
+      return [move[0]+(5-delta),move[1]]
   else:
     return move
 """Agente que juega por reflejo"""
@@ -102,11 +102,11 @@ def playOnSubMatch(board, size, player):
     newBoard = []
     # board = board.tolist()
     for row in board:
-      newBoard.append(row[center-size:center+size])
+      newBoard.append(row[center-size:center+size+1])
     # return np.array(newBoard)
     return newBoard
   else:
-    return board[center-size:center+size]
+    return board[center-size:center+size+1]
 
 """Asigna los hijos con todos los posibles estados a un nodo dado"""
 def expandChangeNode(node, player, isMax):
