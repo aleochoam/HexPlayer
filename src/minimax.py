@@ -5,9 +5,11 @@ def value(node):
     return getUtility(node)
 
   if node.isMax:
-    return maxValue(node)
+    node.value = maxValue(node)
+    return node.value
   else:
-    return minValue(node)
+    node.value = minValue(node)
+    return node.value
 
 def maxValue(node):
   v = -math.inf

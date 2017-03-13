@@ -19,36 +19,46 @@ def Agente_JuanDaniel_Alejandro(board, player):
   reflejo = reflexAgent(board, player)
   if reflejo is not None:
     return reflejo
-
+  onSub = False
   numMoves = countMoves(board)
-  # if numMoves <= 5:
-  #   board = playOnSubMatch(board, numMoves+1, player)
-
-    # print(board)
-
-  root = ChangeNode(None, board, [], True)
+  if numMoves <= 50:
+    delta = int(numMoves/10)
+    if(delta<=3):
+      delta = 3
+    newBoard = playOnSubMatch(board, delta, player)
+    onSub = True
+    root = ChangeNode(None, newBoard, [], True)
+  else:
+    root = ChangeNode(None, board, [], True)
   expandChangeNode(root, player, False)
   for child in root.getSuccesors():
     expandChangeNode(child, adversary, True)
-    if numMoves > 70:
-      for grandChildren in child.getSuccesors():
-        expandChangeNode(grandChildren, player, False)
-
-  if numMoves < 20:
+    for grandChildren in child.getSuccesors():
+      expandChangeNode(grandChildren, player, False)
+  print(root.state)
+  root.state = board
+  print(root.state)
+  if numMoves < 30:
     res = expectimax.value(root)
   else:
     res = minimax.value(root)
+  move = None
+  max = 0
 
   for node in root.getSuccesors():
-    if res == node.getValue():
-      return node.changeset[-1][1]
-    for child in node.getSuccesors():
-      if res == child.getValue():
-        return child.changeset[-1][1]
-      for grandChildren in child.getSuccesors():
-        if res == grandChildren.getValue():
-          return grandChildren.changeset[-1][1]
-
+    if(node.value >= max):
+      print("Entre.")
+      max = node.value
+      move = node.changeset[-1][1]
+  print(max)
+  print(move)
+  if(onSub):
+    if(player == 1):
+      return (move[0], move[1]+(delta-1))
+    else:
+      return (move[0]+(delta-1),move[1])
+  else:
+    return move
 """Agente que juega por reflejo"""
 def reflexAgent(board, player):
   # moves = countMoves(board)
@@ -116,7 +126,7 @@ def getPosibleMoves(state, moves, player):
 
   newMoves = []
   for col in range(len(state)):
-    for row in range(len(state)):
+    for row in range(len(state[col])):
       if newBoard[col][row] == 0:
         newMoves.append((player, [col,row]))
   return newMoves
