@@ -64,7 +64,7 @@ class ChangeNode(object):
     ll = ai.countLenLine(Mboard, lastMove)
     mo = ((11-ll[1])/11)*ll[0]
 
-    self.value = vc + 2*mo + nc + nb
+    self.value = vc + mo + nc + nb
     # print(self.value)
     # print(vc,nc,nb,ll, " = ", value)
     return self.value

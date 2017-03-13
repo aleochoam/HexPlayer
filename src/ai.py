@@ -35,10 +35,10 @@ def Agente_JuanDaniel_Alejandro(board, player):
     expandChangeNode(child, adversary, True)
     for grandChildren in child.getSuccesors():
       expandChangeNode(grandChildren, player, False)
-  print(root.state)
+#  print(root.state)
   root.state = board
-  print(root.state)
-  if numMoves < 30:
+#  print(root.state)
+  if numMoves < 50:
     res = expectimax.value(root)
   else:
     res = minimax.value(root)
@@ -47,11 +47,11 @@ def Agente_JuanDaniel_Alejandro(board, player):
 
   for node in root.getSuccesors():
     if(node.value >= max):
-      print("Entre.")
+#      print("Entre.")
       max = node.value
       move = node.changeset[-1][1]
-  print(max)
-  print(move)
+#  print(max)
+#  print(move)
   if(onSub):
     if(player == 1):
       return (move[0], move[1]+(delta-1))
