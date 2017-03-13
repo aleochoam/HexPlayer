@@ -31,5 +31,5 @@ def minValue(node):
   return v
 
 def getUtility(node):
-  node.value = node.getValue()
-  return node.value
+  res = node.getValue()
+  return res

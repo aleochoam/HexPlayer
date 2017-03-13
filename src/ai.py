@@ -26,38 +26,28 @@ def Agente_JuanDaniel_Alejandro(board, player):
 
     # print(board)
 
-  root = ChangeNode(None, board, [], None)
-  expandChangeNode(root, player, True)
+  root = ChangeNode(None, board, [], True)
+  expandChangeNode(root, player, False)
   for child in root.getSuccesors():
-    expandChangeNode(child, adversary, False)
+    expandChangeNode(child, adversary, True)
     if numMoves > 70:
       for grandChildren in child.getSuccesors():
-        expandChangeNode(grandChildren, player, True)
+        expandChangeNode(grandChildren, player, False)
 
-  # bestValue = -1
-  # bestNode = None
-  res = expectimax.value(root)
-  print(res, root.value)
+  if numMoves < 20:
+    res = expectimax.value(root)
+  else:
+    res = minimax.value(root)
+
   for node in root.getSuccesors():
-    if node.value == res:
-      return node.changeset[0][1]
-
-  print("POR ACA")
-  # for child in root.getSuccesors():
-  #   if numMoves < 20:
-  #     nodeValue = expectimax.value(child)
-  #   else:
-  #     nodeValue = minimax.value(child)
-
-  #   child.value = nodeValue
-
-  #   if bestValue < nodeValue:
-  #     bestValue = nodeValue
-  #     bestNode = child
-
-  # print(bestNode.changeset[0][1], bestValue)
-  # return bestNode.changeset[0][1]
-  # return minimax.value(root)
+    if res == node.getValue():
+      return node.changeset[-1][1]
+    for child in node.getSuccesors():
+      if res == child.getValue():
+        return child.changeset[-1][1]
+      for grandChildren in child.getSuccesors():
+        if res == grandChildren.getValue():
+          return grandChildren.changeset[-1][1]
 
 """Agente que juega por reflejo"""
 def reflexAgent(board, player):

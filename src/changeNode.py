@@ -56,15 +56,15 @@ class ChangeNode(object):
 
     player = self.changeset[-1][0]
     lastMove = self.changeset[-1]
-    board = self.getState()
+    Mboard = self.getState()
 
-    vc = pesoCV * ai.hasVirtualConnection(board, lastMove)
-    nc = pesoNConexiones * ai.countNewConnections(board, lastMove)
-    nb = pesoNoBloqueado * ai.isNotBlocked(board, lastMove)
-    ll = ai.countLenLine(board, lastMove)
+    vc = pesoCV * ai.hasVirtualConnection(Mboard, lastMove)
+    nc = pesoNConexiones * ai.countNewConnections(Mboard, lastMove)
+    nb = pesoNoBloqueado * ai.isNotBlocked(Mboard, lastMove)
+    ll = ai.countLenLine(Mboard, lastMove)
     mo = ((11-ll[1])/11)*ll[0]
 
-    value = vc + nc + nb + mo
-
+    self.value = vc + nc + nb + mo
+    # print(self.value)
     # print(vc,nc,nb,ll, " = ", value)
-    return value
+    return self.value
