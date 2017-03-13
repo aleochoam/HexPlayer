@@ -37,10 +37,10 @@ def Agente_JuanDaniel_Alejandro(board, player):
   bestValue = -1
   bestNode = None
   for child in root.getSuccesors():
-    if numMoves < 30:
-      nodeValue = minimax.value(child)
-    else:
+    if numMoves < 20:
       nodeValue = expectimax.value(child)
+    else:
+      nodeValue = minimax.value(child)
 
     child.value = nodeValue
 
