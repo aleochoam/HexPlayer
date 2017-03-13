@@ -227,52 +227,172 @@ def countLenLine(board, move):
   x = move[1][1]
   player = move[0]
 
-  return countForwards(board, player, y, x, 0) + countBackwards(board, player, y, x, 0)
+  valueForwards = countForwards(board, player, y, x, 0)
+  valueBackwards = countBackwards(board, player, y, x, 0)
 
+  minDis1 = valueForwards[1]
+  minDis2 = valueForwards[2]
+  if valueBackwards[1] < minDis1:
+    minDis1 = valueBackwards[1]
+  if valueBackwards[2] < minDis2:
+    minDis2 = valueBackwards[2]
+
+  return (valueForwards[0] + valueBackwards[0]) + (((11-minDis1)/11)*(11-minDis2)/11)
+
+
+# def countBackwards(board, player ,i, j, count):
+#   try:
+#     if player == 1:
+#       if i == 0:
+#         return 20, i
+
+#       if board[i-1][j] == 1:
+#         return countBackwards(board, player, i-1, j, count + 1)
+#       if board[i-1][j+1] == 1:
+#         return countBackwards(board, player, i-1, j+1, count + 1)
+#       return count, i
+
+#     if player == 2:
+#       if j == 0:
+#         return 20, j
+#       if board[i][j-1] == 2:
+#         return countBackwards(board, player, i, j-1, count+1)
+#       if board[i-1][j-1] == 2:
+#         return countBackwards(board, player, i-1, j-1, count+1)
+#       return count, j
+
+#   except Exception:
+#     return count, i
+
+# def countForwards(board, player, i, j, count):
+#   try:
+#     if player == 1:
+#       if i == 10:
+#         return 20, i
+#       if board[i+1][j] == 1:
+#         return countForwards(board, player, i+1, j, count+1)
+#       if board[i+1][j-1] == 1:
+#         return countForwards(board, player, i+1, j-1, count+1)
+#       return count, i
+
+#     if player == 2:
+#       if j == 10:
+#         return 20, j
+#       if board[i][j+1] == 2:
+#         return countForwards(board, player, i, j+1, count+1)
+#       if board[i-1][j+1] == 2:
+#         return countForwards(board, player, i-1, j+1, count+1)
+#       return count, j
+
+#   except Exception as e:
+#     return count, j
 
 def countBackwards(board, player ,i, j, count):
   try:
     if player == 1:
-      if i == 0:
-        return 20, i
 
+      minTop = 100
+      minBot = 100
       if board[i-1][j] == 1:
-        return countBackwards(board, player, i-1, j, count + 1)
+        recValue = countBackwards(board, player, i-1, j, count + 1)
+      if(minTop>recValue[1]):
+        minTop = recValue[1]
+      if(minBot>recValue[2]):
+        minBot = recValue[2]
       if board[i-1][j+1] == 1:
-        return countBackwards(board, player, i-1, j+1, count + 1)
-      return count, i
+        recValue = countBackwards(board, player, i-1, j+1, count + 1)
+      if(minTop>recValue[1]):
+        minTop = recValue[1]
+      if(minBot>recValue[2]):
+        minBot = recValue[2]
+
+      else:
+        #fin recursion
+        minTop = i
+        minBot = 11-i
+        return count, minTop, minBot
+
+      return count, minTop, minBot
+
 
     if player == 2:
-      if j == 0:
-        return 20, j
+      minLeft = 100
+      minRight = 100
       if board[i][j-1] == 2:
-        return countBackwards(board, player, i, j-1, count+1)
-      if board[i-1][j-1] == 2:
-        return countBackwards(board, player, i-1, j-1, count+1)
-      return count, j
+        recValue = countBackwards(board, player, i, j-1, count+1)
+        if(minLeft>recValue[1]):
+          minLeft = recValue[1]
+        if(minRight>recValue[2]):
+          minRight = recValue[2]
+      if board[i+1][j-1] == 2:
+        recValue = countBackwards(board, player, i+1, j-1, count+1)
+        if(minLeft>recValue[1]):
+          minLeft = recValue[1]
+        if(minRight>recValue[2]):
+          minRight = recValue[2]
+
+      else:
+        #fin recursion
+        minLeft = j
+        minRight = 11-j
+        return count, minLeft, minRight
+
+      return count, minLeft, minRight
 
   except Exception:
-    return count, i
+    return count, i, 11-i
 
-def countForwards(board, player, i, j, count):
+def countForwards(board, player ,i, j, count):
   try:
     if player == 1:
-      if i == 10:
-        return 20, i
+
+      minTop = 100
+      minBot = 100
       if board[i+1][j] == 1:
-        return countForwards(board, player, i+1, j, count+1)
+        recValue = countForwards(board, player, i+1, j, count + 1)
+      if(minTop>recValue[1]):
+        minTop = recValue[1]
+      if(minBot>recValue[2]):
+        minBot = recValue[2]
       if board[i+1][j-1] == 1:
-        return countForwards(board, player, i+1, j-1, count+1)
-      return count, i
+        recValue = countForwards(board, player, i+1, j-1, count + 1)
+      if(minTop>recValue[1]):
+        minTop = recValue[1]
+      if(minBot>recValue[2]):
+        minBot = recValue[2]
+
+      else:
+        #fin recursion
+        minTop = i
+        minBot = 11-i
+        return count, minTop, minBot
+
+      return count, minTop, minBot
+
 
     if player == 2:
-      if j == 10:
-        return 20, j
+      minLeft = 100
+      minRight = 100
       if board[i][j+1] == 2:
-        return countForwards(board, player, i, j+1, count+1)
+        recValue =  countForwards(board, player, i, j+1, count+1)
+        if(minLeft>recValue[1]):
+          minLeft = recValue[1]
+        if(minRight>recValue[2]):
+          minRight = recValue[2]
       if board[i-1][j+1] == 2:
-        return countForwards(board, player, i-1, j+1, count+1)
-      return count, j
+        recValue = countForwards(board, player, i-1, j+1, count+1)
+        if(minLeft>recValue[1]):
+          minLeft = recValue[1]
+        if(minRight>recValue[2]):
+          minRight = recValue[2]
 
-  except Exception as e:
-    return count, j
+      else:
+        #fin recursion
+        minLeft = j
+        minRight = 11-j
+        return count, minLeft, minRight
+
+      return count, minLeft, minRight
+
+  except Exception:
+    return count, 11-i, i

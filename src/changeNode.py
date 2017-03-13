@@ -62,9 +62,9 @@ class ChangeNode(object):
     nc = pesoNConexiones * ai.countNewConnections(Mboard, lastMove)
     nb = pesoNoBloqueado * ai.isNotBlocked(Mboard, lastMove)
     ll = ai.countLenLine(Mboard, lastMove)
-    mo = ((11-ll[1])/11)*ll[0]
+    #mo = ((11-ll[1])/11)*ll[0]
 
-    self.value = ll[1] *(vc + mo + nc + nb)
+    self.value = ll + vc  + nc + nb
     # print(self.value)
     # print(vc,nc,nb,ll, " = ", value)
     return self.value
