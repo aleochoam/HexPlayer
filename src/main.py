@@ -84,9 +84,11 @@ def main():
   while(True):
     move = Agente_JuanDaniel_Alejandro(board, 1)
     board[move[0]][move[1]] = 1
+    print(move)
     print(np.array(board))
     move = Agente_JuanDaniel_Alejandro(board, 2)
     board[move[0]][move[1]] = 2
+    print(move)
     print(np.array(board))
 
 

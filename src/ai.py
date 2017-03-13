@@ -221,44 +221,58 @@ def isNotBlocked(board, move):
 
 # con una jugada, que tan larga genero una linea
 # Que tan cerca quedo de los bordes ((11-dIzq)/11)*((11-dDer)/11)
-
 def countLenLine(board, move):
-  size = len(board)
+  # size = len(board)
   y = move[1][0]
   x = move[1][1]
   player = move[0]
 
-  if 0 < x < size-1 and 0 < y < size-1:
-    return countLenLineAux(board, player, y, x, 0)
-
-  return (1,0)
+  return countForwards(board, player, y, x, 0) + countBackwards(board, player, y, x, 0)
 
 
-def countLenLineAux(board, player, i, j, count):
+def countBackwards(board, player ,i, j, count):
   try:
     if player == 1:
+      if i == 0:
+        return 20, i
 
       if board[i-1][j] == 1:
-        return countLenLineAux(board, player, i-1, j, count + 1)
-      if board[i-1][j-1] == 1:
-        return countLenLineAux(board, player, i-1, j-1, count + 1)
-      # if board[i-1][j] == 1:
-      #   return countLenLineAux(board, player, i-1, j)
-      # if board[i][j+1] == 1:
-      #   return countLenLineAux(board, player, i, j+1)
-      return (count, i)
+        return countBackwards(board, player, i-1, j, count + 1)
+      if board[i-1][j+1] == 1:
+        return countBackwards(board, player, i-1, j+1, count + 1)
+      return count, i
 
     if player == 2:
-
+      if j == 0:
+        return 20, j
       if board[i][j-1] == 2:
-        return countLenLineAux(board, player, i, j-1, count+1)
+        return countBackwards(board, player, i, j-1, count+1)
       if board[i-1][j-1] == 2:
-        return countLenLineAux(board, player, i-1, j-1, count+1)
-      # if board[i+1][j] == 2:
-      #   return countLenLineAux(board, player, i+1, j)
-      # if board[i-1][j] == 2:
-      #   return countLenLineAux(board, player, i-1, j)
-      return (count, i)
-  except IndexError:
-    return (count, i)
+        return countBackwards(board, player, i-1, j-1, count+1)
+      return count, j
 
+  except Exception:
+    return count, i
+
+def countForwards(board, player, i, j, count):
+  try:
+    if player == 1:
+      if i == 10:
+        return 20, i
+      if board[i+1][j] == 1:
+        return countForwards(board, player, i+1, j, count+1)
+      if board[i+1][j-1] == 1:
+        return countForwards(board, player, i+1, j-1, count+1)
+      return count, i
+
+    if player == 2:
+      if j == 10:
+        return 20, j
+      if board[i][j+1] == 2:
+        return countForwards(board, player, i, j+1, count+1)
+      if board[i-1][j+1] == 2:
+        return countForwards(board, player, i-1, j+1, count+1)
+      return count, j
+
+  except Exception as e:
+    return count, j
