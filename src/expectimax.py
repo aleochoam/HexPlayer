@@ -32,4 +32,5 @@ def expValue(node):
   return v
 
 def getUtility(node):
-  return node.getValue()
+  node.value = node.getValue()
+  return node.value

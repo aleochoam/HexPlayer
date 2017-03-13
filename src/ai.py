@@ -34,22 +34,29 @@ def Agente_JuanDaniel_Alejandro(board, player):
       for grandChildren in child.getSuccesors():
         expandChangeNode(grandChildren, player, True)
 
-  bestValue = -1
-  bestNode = None
-  for child in root.getSuccesors():
-    if numMoves < 20:
-      nodeValue = expectimax.value(child)
-    else:
-      nodeValue = minimax.value(child)
+  # bestValue = -1
+  # bestNode = None
+  res = expectimax.value(root)
+  print(res, root.value)
+  for node in root.getSuccesors():
+    if node.value == res:
+      return node.changeset[0][1]
 
-    child.value = nodeValue
+  print("POR ACA")
+  # for child in root.getSuccesors():
+  #   if numMoves < 20:
+  #     nodeValue = expectimax.value(child)
+  #   else:
+  #     nodeValue = minimax.value(child)
 
-    if bestValue < nodeValue:
-      bestValue = nodeValue
-      bestNode = child
+  #   child.value = nodeValue
 
-  print(bestNode.changeset[0][1], bestValue)
-  return bestNode.changeset[0][1]
+  #   if bestValue < nodeValue:
+  #     bestValue = nodeValue
+  #     bestNode = child
+
+  # print(bestNode.changeset[0][1], bestValue)
+  # return bestNode.changeset[0][1]
   # return minimax.value(root)
 
 """Agente que juega por reflejo"""
