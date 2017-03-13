@@ -1,6 +1,4 @@
-from random import randint
 import math
-# Cambiar por funcion de evaluación
 
 def value(node):
   if len(node.succesors) == 0:

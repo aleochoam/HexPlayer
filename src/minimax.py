@@ -1,4 +1,3 @@
-from random import random
 import math
 
 def value(node):

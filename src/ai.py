@@ -30,7 +30,7 @@ def Agente_JuanDaniel_Alejandro(board, player):
   expandChangeNode(root, player, True)
   for child in root.getSuccesors():
     expandChangeNode(child, adversary, False)
-    if numMoves > 30:
+    if numMoves > 70:
       for grandChildren in child.getSuccesors():
         expandChangeNode(grandChildren, player, True)
 

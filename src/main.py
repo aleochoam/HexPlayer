@@ -70,17 +70,19 @@ def checkLine(board, player, i, j):
 def main():
   board = initBoard(11,11)
   while(True):
+    start = time.time()
     move = Agente_JuanDaniel_Alejandro(board, 1)
+    end = time.time()
     board[move[0]][move[1]] = 1
+    print(end-start)
     print(np.array(board))
+    start = time.time()
     move = Agente_JuanDaniel_Alejandro(board, 2)
+    end = time.time()
     board[move[0]][move[1]] = 2
+    print(end-start)
     print(np.array(board))
 
-def main2():
-  board = initBoard(11,11)
-  move = Agente_JuanDaniel_Alejandro(board, 1)
-  print("El mayor es: " + str(move))
 
 if __name__ == '__main__':
   main()
