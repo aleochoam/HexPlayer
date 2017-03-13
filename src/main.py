@@ -68,7 +68,7 @@ def checkLine(board, player, i, j):
     return False
 
 def main():
-  board = initBoard(5,5)
+  board = initBoard(11,11)
   while(True):
     move = Agente_JuanDaniel_Alejandro(board, 1)
     board[move[0]][move[1]] = 1

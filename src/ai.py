@@ -16,28 +16,32 @@ def Agente_JuanDaniel_Alejandro(board, player):
     adversary = 1
 
   # Se juega por reflejo
-  # reflejo = reflexAgent(board, player)
-  # if reflejo is not None:
-  #   return reflejo
+  reflejo = reflexAgent(board, player)
+  if reflejo is not None:
+    return reflejo
 
+  numMoves = countMoves(board)
   # if numMoves <= 5:
   #   board = playOnSubMatch(board, numMoves+1, player)
 
-  #   print(board)
-  numMoves = countMoves(board)
+    # print(board)
 
   root = ChangeNode(None, board, [], None)
   expandChangeNode(root, player, True)
   for child in root.getSuccesors():
     expandChangeNode(child, adversary, False)
-    if numMoves < 20:
+    if numMoves > 30:
       for grandChildren in child.getSuccesors():
         expandChangeNode(grandChildren, player, True)
 
   bestValue = -1
   bestNode = None
   for child in root.getSuccesors():
-    nodeValue = minimax.value(child)
+    if numMoves < 30:
+      nodeValue = minimax.value(child)
+    else:
+      nodeValue = expectimax.value(child)
+
     child.value = nodeValue
 
     if bestValue < nodeValue:
@@ -54,7 +58,7 @@ def reflexAgent(board, player):
   mid = int(len(board)/2)
   if board[mid][mid] == 0:
     return [mid, mid]
-    
+
   if player == 1:
     if board[3][4] == 0:
       return [3,4]
